@@ -41,6 +41,7 @@
 #import "FSNodeRep.h"
 #import "FSNFunctions.h"
 #import "GWorkspace.h"
+#import "GWGlobalMenuWindow.h"
 #import "Dialogs.h"
 #import "OpenWithController.h"
 #import "RunExternalController.h"
@@ -65,6 +66,8 @@ static NSString *defaulteditor = @"nedit.app";
 static NSString *defaultxterm = @"xterm";
 
 static GWorkspace *gworkspace = nil;
+
+static GWGlobalMenuWindow *globalMenu = nil;
 
 @interface	GWorkspace (PrivateMethods)
 - (void)_updateTrashContents;
@@ -518,6 +521,25 @@ static GWorkspace *gworkspace = nil;
   lockpath = [storedAppinfoPath stringByAppendingPathExtension: @"lock"];   
   storedAppinfoLock = [[NSDistributedLock alloc] initWithPath: lockpath];
 
+
+  NSRect screenFrame = [[NSScreen mainScreen] frame];
+  NSRect globalMenuRect = (NSRect){
+    .size = (NSSize){
+      .width = screenFrame.size.width,
+      .height = 22
+    },
+    .origin = (NSPoint){
+      .x = 0,
+      .y = screenFrame.size.height - 20
+    }
+  };
+
+  globalMenu = [[GWGlobalMenuWindow alloc] initWithContentRect: globalMenuRect
+   						     styleMask: NSBorderlessWindowMask
+						       backing: NSBackingStoreBuffered
+							 defer: NO];
+  [globalMenu retain];
+  [globalMenu makeKeyAndOrderFront: self];
   launchedApps = [NSMutableArray new];   
   activeApplication = nil;   
 }
