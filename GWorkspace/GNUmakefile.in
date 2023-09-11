@@ -65,6 +65,7 @@ GWorkspace_LANGUAGES = \
 # The Objective-C source files to be compiled
 GWorkspace_OBJC_FILES = main.m \
 GWFunctions.m \
+GWGlobalMenuWindow.m \
 GWorkspace.m \
 WorkspaceApplication.m \
 Desktop/GWDesktopManager.m \
