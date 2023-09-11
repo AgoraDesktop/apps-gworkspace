@@ -838,7 +838,7 @@
         [icons removeObject: dndSourceIcon];
         [icons insertObject: dndSourceIcon atIndex: index];
         RELEASE (dndSourceIcon);
-        [self  tile];  
+        [self tile];  
         return NSDragOperationMove;    
       }
 
