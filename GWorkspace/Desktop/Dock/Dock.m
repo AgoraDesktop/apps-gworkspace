@@ -521,13 +521,17 @@
       [icon setIconSize: iconSize];
     }
     
-    icnrect.origin.y -= icnrect.size.height;
-    [icon setFrame: icnrect];
-    
-    if ((targetIndex != -1) && (targetIndex == i)) {
-      icnrect.origin.y -= icnrect.size.height;
-      targetRect = icnrect;
+    if ([icon isTrashIcon]) {
+        icnrect.origin.y = 0;
+    } else {
+        icnrect.origin.y -= icnrect.size.height;
     }
+    
+    targetRect = icnrect;
+
+    [icon setFrame: targetRect];
+    
+    [icon setNeedsDisplayInRect: icon.frame];
   } 
   
   [self setNeedsDisplay: YES];
