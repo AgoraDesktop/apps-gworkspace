@@ -32,9 +32,9 @@
 #import "GWDesktopView.h"
 #import "GWorkspace.h"
 
-#define MAX_ICN_SIZE 48
+#define MAX_ICN_SIZE 64
 #define MIN_ICN_SIZE 16
-#define ICN_INCR 4
+#define ICN_INCR 2
 
 /* small category to access NSNUmericSearch through a selector */
 
@@ -99,11 +99,17 @@
 			 nil];
       [self registerForDraggedTypes: pbTypes];
 
-      if (style == DockStyleModern)
-	[self setBackColor: [[NSColor grayColor] colorWithAlphaComponent: 0.33]];
-      else
+      if (style == DockStyleModern) {
+        NSColor *bgcolor = [NSColor colorWithDeviceRed: 0.0
+	      				         green: 0.0
+					          blue: 0.0
+					         alpha: 0.85];
+        [bgcolor autorelease];
+	[self setBackColor: bgcolor];
+      } else {
 	[self setBackColor: [NSColor grayColor]];
-      
+      }
+
       [self createWorkspaceIcon];
 
       appsdict = [defaults objectForKey: @"applications"];
@@ -438,7 +444,12 @@
 	}
       else if (s == DockStyleModern)
 	{
-	  [self setBackColor: [[NSColor grayColor] colorWithAlphaComponent: 0.33]];
+          NSColor *bgcolor = [NSColor colorWithDeviceRed: 0.0
+	   				           green: 0.0
+					            blue: 0.0
+					           alpha: 0.85];
+          [bgcolor autorelease];
+	  [self setBackColor: bgcolor];
 	}
     }
   style = s;
@@ -504,9 +515,10 @@
   }
 
   rect.size.width = icnrect.size.width;
+  rect.size.height = ceil(scrrect.size.height - 22);
   rect.origin.x = (position == DockPositionLeft) ? 0 : scrrect.size.width - rect.size.width;
-  rect.origin.y = ceil((scrrect.size.height - rect.size.height) / 2);
-  
+  rect.origin.y = 0;
+
   if (view) {
     [view setNeedsDisplayInRect: [self frame]];
   }
