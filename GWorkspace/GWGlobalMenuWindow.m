@@ -46,6 +46,83 @@
 		self.releasedWhenClosed = NO;
 	}
 
+	NSMenuView *systemMenuView = [NSMenuView new];
+	systemMenuView.frame = NSMakeRect(-2, -1, 22, 22);
+	systemMenuView.horizontal = YES;
+	[self.contentView addSubview: systemMenuView];
+
+	NSMenu *systemMenu = [NSMenu new];
+	systemMenuView.menu = systemMenu;
+
+	id<NSMenuItem> systemMenuItem = [systemMenu addItemWithTitle: @""
+							       action: NULL
+							keyEquivalent: @""];
+	systemMenuItem.image = [NSImage imageNamed: @"common_SystemMenu"];
+
+
+
+	NSMenu *systemSubmenu = [NSMenu new];
+	[systemMenu setSubmenu: systemSubmenu
+		       forItem: systemMenuItem];
+	
+	[systemSubmenu addItemWithTitle: @"About Agora"
+				 action: NULL
+		   	  keyEquivalent: @""];
+
+	[systemSubmenu addItem: [NSMenuItem separatorItem]];
+
+
+	[systemSubmenu addItemWithTitle: @"System Preferences"
+				 action: @selector(openSystemPreferences:)
+		   	  keyEquivalent: @""];
+/*
+	id<NSMenuItem> dockMenuItem = [systemSubmenu addItemWithTitle: @"Dock"
+				 				action: NULL
+	   	  	  				 keyEquivalent: @""];
+
+	dockMenuItem.submenu = [NSMenu new];
+
+	[dockMenuItem.submenu addItemWithTitle: @"Hide"
+	   			        action: NULL
+				 keyEquivalent: @""];
+
+
+	[dockMenuItem.submenu addItem: [NSMenuItem separatorItem]];
+
+	[dockMenuItem.submenu addItemWithTitle: @"Pin to Left Side"
+					action: NULL
+				 keyEquivalent: @""];
+	
+	[dockMenuItem.submenu addItemWithTitle: @"Pin to Right Side"
+					action: NULL
+				 keyEquivalent: @""];
+
+	[dockMenuItem.submenu update];
+*/
+	[systemSubmenu addItem: [NSMenuItem separatorItem]];
+
+	[systemSubmenu addItemWithTitle: @"Force quit..."
+				 action: NULL
+		   	  keyEquivalent: @""];
+
+	[systemSubmenu addItem: [NSMenuItem separatorItem]];
+	
+	[systemSubmenu addItemWithTitle: @"Restart..."
+				 action: NULL
+			  keyEquivalent: @""];
+
+	[systemSubmenu addItemWithTitle: @"Shut down..."
+				 action: NULL
+			  keyEquivalent: @""];
+
+	[systemSubmenu addItem: [NSMenuItem separatorItem]];
+
+	[[systemSubmenu addItemWithTitle: @"Log out..."
+			  	  action: @selector(terminate:)
+	                   keyEquivalent: @""] setTarget: NSApp];
+
+	
+
 	return self;
 }
 

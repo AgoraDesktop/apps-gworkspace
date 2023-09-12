@@ -526,11 +526,11 @@ static GWGlobalMenuWindow *globalMenu = nil;
   NSRect globalMenuRect = (NSRect){
     .size = (NSSize){
       .width = screenFrame.size.width,
-      .height = 22
+      .height = 25
     },
     .origin = (NSPoint){
       .x = 0,
-      .y = screenFrame.size.height - 20
+      .y = screenFrame.size.height - 19
     }
   };
 
