@@ -32,9 +32,9 @@
 #import "GWDesktopView.h"
 #import "GWorkspace.h"
 
-#define MAX_ICN_SIZE 64
+#define MAX_ICN_SIZE 48
 #define MIN_ICN_SIZE 16
-#define ICN_INCR 2
+#define ICN_INCR 4
 
 /* small category to access NSNUmericSearch through a selector */
 
@@ -61,7 +61,7 @@
 
 - (id)initForManager:(id)mngr
 {
-  self = [super initWithFrame: NSMakeRect(0, 0, 64, 64)];
+  self = [super initWithFrame: NSMakeRect(0, 0, 128, 128)];
   
   if (self)
     {
