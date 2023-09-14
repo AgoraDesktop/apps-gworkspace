@@ -50,7 +50,7 @@
 		self.becomesKeyOnlyIfNeeded = YES;
 
 		// Create a MenuView to hold our global menu.
-		NSMenuView *menuView = [[NSMenuView alloc] initWithFrame: NSMakeRect(-5,0,25,25)];
+		NSMenuView *menuView = [[NSMenuView alloc] initWithFrame: NSMakeRect(-3,0,25,25)];
 		menuView.horizontal = true;
 
 		// Create our global menu.

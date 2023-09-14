@@ -529,7 +529,7 @@ static GWGlobalMenuPanel *globalMenuPanel = nil;
     },
     .origin = (NSPoint){
       .x = -2,
-      .y = screenFrame.size.height - 21
+      .y = screenFrame.size.height - 20
     }
   };
 
