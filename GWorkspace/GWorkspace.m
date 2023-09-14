@@ -67,7 +67,7 @@ static NSString *defaultxterm = @"xterm";
 
 static GWorkspace *gworkspace = nil;
 
-static GWGlobalMenuWindow *globalMenu = nil;
+static GWGlobalMenuPanel *globalMenuPanel = nil;
 
 @interface	GWorkspace (PrivateMethods)
 - (void)_updateTrashContents;
@@ -519,25 +519,27 @@ static GWGlobalMenuWindow *globalMenu = nil;
   lockpath = [storedAppinfoPath stringByAppendingPathExtension: @"lock"];   
   storedAppinfoLock = [[NSDistributedLock alloc] initWithPath: lockpath];
 
+  // Create the global menubar
 
   NSRect screenFrame = [[NSScreen mainScreen] frame];
   NSRect globalMenuRect = (NSRect){
     .size = (NSSize){
-      .width = screenFrame.size.width,
+      .width = screenFrame.size.width + 4,
       .height = 25
     },
     .origin = (NSPoint){
-      .x = 0,
-      .y = screenFrame.size.height - 19
+      .x = -2,
+      .y = screenFrame.size.height - 21
     }
   };
 
-  globalMenu = [[GWGlobalMenuWindow alloc] initWithContentRect: globalMenuRect
-   						     styleMask: NSBorderlessWindowMask
-						       backing: NSBackingStoreBuffered
-							 defer: NO];
-  [globalMenu retain];
-  [globalMenu makeKeyAndOrderFront: self];
+  globalMenuPanel = [[GWGlobalMenuPanel alloc] initWithContentRect: globalMenuRect
+		     					 styleMask: NSBorderlessWindowMask
+		     					   backing: NSBackingStoreBuffered
+		     					     defer: YES];
+
+  [globalMenuPanel orderFrontRegardless];
+
   launchedApps = [NSMutableArray new];   
   activeApplication = nil;   
 }

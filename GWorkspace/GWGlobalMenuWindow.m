@@ -26,35 +26,77 @@
 
 #import <AppKit/AppKit.h>
 
-@implementation GWGlobalMenuWindow
+@implementation GWGlobalMenuPanel
 
-- (instancetype) initWithContentRect:(NSRect)contentRect 
-                           styleMask:(NSWindowStyleMask)style 
-		             backing:(NSBackingStoreType)backingStoreType 
-		               defer:(BOOL)flag {
+- (instancetype) initWithContentRect: (NSRect) contentRect 
+                           styleMask: (NSWindowStyleMask) style 
+                             backing: (NSBackingStoreType) backingStoreType 
+                               defer: (BOOL)flag {
 
-	if (self = [super initWithContentRect: contentRect 
-			            styleMask: NSWindowStyleMaskBorderless | NSWindowStyleMaskNonactivatingPanel
-				      backing:(NSBackingStoreType)backingStoreType 
-				        defer:(BOOL)flag]) {
+	if (self = [super initWithContentRect: contentRect
+				    styleMask: style
+				      backing: backingStoreType
+				        defer: flag]) {
 
+		// Set our window properties
 		self.level = NSMainMenuWindowLevel - 1;
 		self.canHide = NO;
 		self.hidesOnDeactivate = NO;
 		self.excludedFromWindowsMenu = YES;
 		self.movableByWindowBackground = NO;
 		self.releasedWhenClosed = NO;
+		self.backgroundColor = NSColor.clearColor;
+		self.worksWhenModal = YES;
+		self.becomesKeyOnlyIfNeeded = YES;
 
+		// Create a MenuView to hold our global menu.
+		NSMenuView *menuView = [[NSMenuView alloc] initWithFrame: NSMakeRect(-5,0,25,25)];
+		menuView.horizontal = true;
+
+		// Create our global menu.
+		GWGlobalMenu *globalMenu = [GWGlobalMenu new];
+
+		// Attach the menu to the menu view
+		menuView.menu = globalMenu;
+
+		// Add the menu view as our subview
+		[self.contentView addSubview: menuView];
+	}
+
+	return self;
+}
+
+- (void) _setmenu: (NSMenu *) menu {
+	_the_menu = menu;
+}
+
+- (NSMenu *) _menu {
+	return _the_menu;
+}
+
+
+- (BOOL) canBecomeKeyWindow {
+	return NO;
+}
+
+- (BOOL) canBecomeMainWindow {
+	return NO;
+}
+
+@end
+
+
+@implementation GWGlobalMenu
+
+- (instancetype) init {
+
+	if (self = [super init]) {
+	
 		// Generate the system menu
 
-		NSMenuView *systemMenuView = [NSMenuView new];
-		systemMenuView.frame = NSMakeRect(0,0,25,25);
-		systemMenuView.horizontal = YES;
-
-		NSMenu *systemMenuToplevel = [NSMenu new];
-		id<NSMenuItem> systemMenuItem = [systemMenuToplevel addItemWithTitle: @""
-								              action: NULL
-							               keyEquivalent: @""];
+		id<NSMenuItem> systemMenuItem = [self addItemWithTitle: @""
+								action: NULL
+						         keyEquivalent: @""];
 		systemMenuItem.image = [NSImage imageNamed: @"common_SystemMenu"];
 
 		NSMenu* systemMenu = [NSMenu new];
@@ -97,36 +139,9 @@
 			       keyEquivalent: @""];
 
 		[systemMenu update];
-		[systemMenuToplevel update];
-		systemMenuView.menu = systemMenuToplevel;
-		[self.contentView addSubview: systemMenuView];
-
-
-		// Generate the clock -- a dummy for now.
-
-		NSTextField *clock = [NSTextField new];
-		clock.stringValue = @"Sun 1 Jan 1988    08:43";
-		clock.editable = NO;
-		clock.selectable = NO;
-		clock.drawsBackground = NO;
-		clock.bezeled = NO;
-		clock.bordered = NO;
-		clock.font = [NSFont boldSystemFontOfSize: 0.0];
-		clock.frame = NSMakeRect(contentRect.size.width - 110,0,100,18);
-
-		[self.contentView addSubview: clock];
-
 	}
 
 	return self;
-}
-
-- (BOOL) canBecomeKeyWindow {
-	return NO;
-}
-
-- (BOOL) canBecomeMainWindow {
-	return NO;
 }
 
 @end

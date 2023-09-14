@@ -24,7 +24,18 @@
 
 #import <AppKit/AppKit.h>
 
-@interface GWGlobalMenuWindow: NSPanel
+@interface GWGlobalMenuPanel: NSPanel {
+  NSMenu *_the_menu;
+}
+
+- (void) _setmenu: (NSMenu *)menu;
+
+- (NSMenu *) _menu;
+
+@end
+
+
+@interface GWGlobalMenu: NSMenu {}
 
 @end
 
