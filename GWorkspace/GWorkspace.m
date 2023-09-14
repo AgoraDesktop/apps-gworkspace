@@ -534,7 +534,7 @@ static GWGlobalMenuPanel *globalMenuPanel = nil;
   };
 
   globalMenuPanel = [[GWGlobalMenuPanel alloc] initWithContentRect: globalMenuRect
-		     					 styleMask: NSBorderlessWindowMask
+		     					 styleMask: NSBorderlessWindowMask | NSWindowStyleMaskNonactivatingPanel
 		     					   backing: NSBackingStoreBuffered
 		     					     defer: YES];
 
