@@ -69,6 +69,8 @@ static GWorkspace *gworkspace = nil;
 
 static GWGlobalMenuPanel *globalMenuPanel = nil;
 
+static NSWindow *aboutAgoraWindow;
+
 @interface	GWorkspace (PrivateMethods)
 - (void)_updateTrashContents;
 @end
@@ -183,7 +185,7 @@ static GWGlobalMenuPanel *globalMenuPanel = nil;
   [menu addItemWithTitle:_(@"Open") action:@selector(openSelection:) keyEquivalent:@"o"];
   [menu addItemWithTitle:_(@"Open With...")  action:@selector(openWith:) keyEquivalent:@""];
   [[menu addItemWithTitle:_(@"Open as Folder") action:@selector(openSelectionAsFolder:) 
-	    				keyEquivalent:@"o"] setKeyEquivalentModifierMask: NSAlternateKeyMask];
+	    				keyEquivalent:@"o"] setKeyEquivalentModifierMask: (NSCommandKeyMask | NSShiftKeyMask)];
   [menu addItemWithTitle:_(@"New Folder") action:@selector(newFolder:) keyEquivalent:@"n"];
   [[menu addItemWithTitle:_(@"New File")  action:@selector(newFile:) 
 	    			   keyEquivalent:@"n"] setKeyEquivalentModifierMask: NSAlternateKeyMask];
@@ -2845,6 +2847,45 @@ static GWGlobalMenuPanel *globalMenuPanel = nil;
 - (BOOL)terminating
 {
   return terminating;
+}
+
+//
+// System menu actions
+//
+
+- (void) showAboutAgoraWindow: (id) sender {
+	if (aboutAgoraWindow == nil) {
+		NSRect aRect = NSMakeRect(0,0,350,500);
+		aRect.origin.x = (NSScreen.mainScreen.frame.size.width / 2) - (aRect.size.width / 2);
+		aRect.origin.y = (NSScreen.mainScreen.frame.size.height / 2) - (aRect.size.height / 2);
+		NSWindowStyleMask aMask = NSWindowStyleMaskClosable; 
+		aboutAgoraWindow = [[NSWindow alloc] initWithContentRect: aRect
+							       styleMask: aMask
+								 backing: NSBackingStoreBuffered
+								   defer: YES];
+		aboutAgoraWindow.releasedWhenClosed = NO;
+		aboutAgoraWindow.title = @"About Agora";
+
+		[aboutAgoraWindow retain];
+	}
+
+	[aboutAgoraWindow makeKeyAndOrderFront: self];
+}
+
+- (void) openSystemPreferences: (id) sender {
+	[NSWorkspace.sharedWorkspace launchApplication: @"SystemPreferences"]; 
+}
+
+- (void) forceQuit: (id) sender {
+	// Start the task killer (to be written)
+}
+
+- (void) restartComputer: (id) sender {
+	// Show a confirmation dialog, which runs the restart command on "ok".
+}
+
+- (void) shutDownComputer: (id) sender {
+	// Show a confirmation dialog, which runs the shut down command on "ok".
 }
 
 @end
