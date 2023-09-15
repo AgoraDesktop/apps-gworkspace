@@ -2867,6 +2867,8 @@ static NSWindow *aboutAgoraWindow;
 		aboutAgoraWindow.title = @"About Agora";
 
 		[aboutAgoraWindow retain];
+
+
 	}
 
 	[aboutAgoraWindow makeKeyAndOrderFront: self];
