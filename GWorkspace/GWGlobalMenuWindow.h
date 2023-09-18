@@ -1,6 +1,6 @@
-/* GWGlobalMenuWindow.h
+/* GWGlobalMenuWindow.m
  *  
- * Copyright (C) 2023 Kyle J Cardoza.
+ * Copyright (C) 2023 Kyle J Cardoza
  *
  * Author: Kyle J Cardoza <Kyle.Cardoza@icloud.com>
  * Date: September 2023
@@ -24,6 +24,18 @@
 
 #import <AppKit/AppKit.h>
 
-@interface GWGlobalMenuWindow : NSWindow {}
+@interface GWGlobalMenuPanel: NSPanel {
+  NSMenu *_the_menu;
+}
+
+- (void) _setmenu: (NSMenu *)menu;
+
+- (NSMenu *) _menu;
 
 @end
+
+
+@interface GWGlobalMenu: NSMenu {}
+
+@end
+

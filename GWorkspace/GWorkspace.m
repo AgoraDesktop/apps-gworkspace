@@ -67,7 +67,7 @@ static NSString *defaultxterm = @"xterm";
 
 static GWorkspace *gworkspace = nil;
 
-static GWGlobalMenuWindow *globalMenu = nil;
+static GWGlobalMenuPanel *globalMenuPanel = nil;
 
 @interface	GWorkspace (PrivateMethods)
 - (void)_updateTrashContents;
@@ -182,9 +182,11 @@ static GWGlobalMenuWindow *globalMenu = nil;
   [mainMenu setSubmenu: menu forItem: menuItem];		
   [menu addItemWithTitle:_(@"Open") action:@selector(openSelection:) keyEquivalent:@"o"];
   [menu addItemWithTitle:_(@"Open With...")  action:@selector(openWith:) keyEquivalent:@""];
-  [menu addItemWithTitle:_(@"Open as Folder") action:@selector(openSelectionAsFolder:) keyEquivalent:@"O"];
+  [[menu addItemWithTitle:_(@"Open as Folder") action:@selector(openSelectionAsFolder:) 
+	    				keyEquivalent:@"o"] setKeyEquivalentModifierMask: NSAlternateKeyMask];
   [menu addItemWithTitle:_(@"New Folder") action:@selector(newFolder:) keyEquivalent:@"n"];
-  [menu addItemWithTitle:_(@"New File")  action:@selector(newFile:) keyEquivalent:@"N"];
+  [[menu addItemWithTitle:_(@"New File")  action:@selector(newFile:) 
+	    			   keyEquivalent:@"n"] setKeyEquivalentModifierMask: NSAlternateKeyMask];
   [menu addItemWithTitle:_(@"Duplicate")  action:@selector(duplicateFiles:) keyEquivalent:@"u"];
   [menu addItemWithTitle:_(@"Destroy")  action:@selector(deleteFiles:) keyEquivalent:@"r"];  
   [menu addItemWithTitle:_(@"Move to Recycler")  action:@selector(recycleFiles:) keyEquivalent:@"d"];
@@ -302,7 +304,8 @@ static GWGlobalMenuWindow *globalMenu = nil;
   [menu addItemWithTitle:_(@"Show Desktop") action:@selector(showDesktop:) keyEquivalent:@""];
   [menu addItemWithTitle:_(@"Show Recycler") action:@selector(showRecycler:) keyEquivalent:@""];
 
-  [menu addItemWithTitle:_(@"Check for disks") action:@selector(checkRemovableMedia:) keyEquivalent:@"E"];
+  [[menu addItemWithTitle:_(@"Check for disks") action:@selector(checkRemovableMedia:) 
+	    				 keyEquivalent:@"e"] setKeyEquivalentModifierMask: NSAlternateKeyMask];
 	
   // Windows
   menuItem = [mainMenu addItemWithTitle:_(@"Windows") action:NULL keyEquivalent:@""];
@@ -319,18 +322,13 @@ static GWGlobalMenuWindow *globalMenu = nil;
 
   // Hide
   [mainMenu addItemWithTitle:_(@"Hide") action:@selector(hide:) keyEquivalent:@"h"];
-  [mainMenu addItemWithTitle:_(@"Hide Others") action:@selector(hideOtherApplications:)  keyEquivalent:@"H"];
+  [[mainMenu addItemWithTitle:_(@"Hide Others") action:@selector(hideOtherApplications:)  
+					 keyEquivalent:@"h"] setKeyEquivalentModifierMask: NSAlternateKeyMask];
   [mainMenu addItemWithTitle:_(@"Show All") action:@selector(unhideAllApplications:) keyEquivalent:@""];
 
   // Print
   [mainMenu addItemWithTitle:_(@"Print...") action:@selector(print:) keyEquivalent:@"p"];
 	
-  // Quit
-  [mainMenu addItemWithTitle:_(@"Quit") action:@selector(terminate:) keyEquivalent:@"Q"];
-
-  // Logout
-  [mainMenu addItemWithTitle:_(@"Logout") action:@selector(logout:) keyEquivalent:@""];
-
   [mainMenu update];
 
   [NSApp setServicesMenu: services];
@@ -521,25 +519,27 @@ static GWGlobalMenuWindow *globalMenu = nil;
   lockpath = [storedAppinfoPath stringByAppendingPathExtension: @"lock"];   
   storedAppinfoLock = [[NSDistributedLock alloc] initWithPath: lockpath];
 
+  // Create the global menubar
 
   NSRect screenFrame = [[NSScreen mainScreen] frame];
   NSRect globalMenuRect = (NSRect){
     .size = (NSSize){
-      .width = screenFrame.size.width,
-      .height = 22
+      .width = screenFrame.size.width + 4,
+      .height = 25
     },
     .origin = (NSPoint){
-      .x = 0,
+      .x = -2,
       .y = screenFrame.size.height - 20
     }
   };
 
-  globalMenu = [[GWGlobalMenuWindow alloc] initWithContentRect: globalMenuRect
-   						     styleMask: NSBorderlessWindowMask
-						       backing: NSBackingStoreBuffered
-							 defer: NO];
-  [globalMenu retain];
-  [globalMenu makeKeyAndOrderFront: self];
+  globalMenuPanel = [[GWGlobalMenuPanel alloc] initWithContentRect: globalMenuRect
+		     					 styleMask: NSBorderlessWindowMask | NSWindowStyleMaskNonactivatingPanel
+		     					   backing: NSBackingStoreBuffered
+		     					     defer: YES];
+
+  [globalMenuPanel orderFrontRegardless];
+
   launchedApps = [NSMutableArray new];   
   activeApplication = nil;   
 }
