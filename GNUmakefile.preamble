@@ -27,3 +27,4 @@ ADDITIONAL_TOOL_LIBS +=
 # Additional directories to be created during installation
 ADDITIONAL_INSTALL_DIRS +=
 
+GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
