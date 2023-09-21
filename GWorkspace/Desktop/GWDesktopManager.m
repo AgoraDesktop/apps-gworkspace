@@ -357,12 +357,12 @@ static GWDesktopManager *desktopManager = nil;
   }
 
   dockReservedFrame.size.height = screenFrame.size.height;
-  dockReservedFrame.size.width = 64 + RESV_MARGIN;
+  dockReservedFrame.size.width = 96 + RESV_MARGIN;
   dockReservedFrame.origin.x = 0;
   dockReservedFrame.origin.y = 0;
   
   if (dockPosition == DockPositionRight) {
-    dockReservedFrame.origin.x = screenFrame.size.width - 64 - RESV_MARGIN;
+    dockReservedFrame.origin.x = screenFrame.size.width - 96 - RESV_MARGIN;
   }
   
   tshelfReservedFrame = NSMakeRect(0, 0, screenFrame.size.width, 106 + RESV_MARGIN);
