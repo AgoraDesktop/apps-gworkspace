@@ -406,6 +406,20 @@
 
 - (void)emptyRecycler:(id)sender;
 
+//
+// System menu actions
+//
+
+- (void) showAboutAgoraWindow: (id) sender;
+
+- (void) openSystemPreferences: (id) sender;
+
+- (void) forceQuit: (id) sender;
+
+- (void) restartComputer: (id) sender;
+
+- (void) shutDownComputer: (id) sender;
+
 
 //
 // DesktopApplication protocol

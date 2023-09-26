@@ -103,13 +103,13 @@
 		systemMenuItem.submenu = systemMenu;
 
 		[systemMenu addItemWithTitle: @"About Agora..."
-				      action: NULL
+				      action: @selector(showAboutAgoraWindow:)
 			       keyEquivalent: @""];
 	
 		[systemMenu addItem: NSMenuItem.separatorItem];
 
 		[systemMenu addItemWithTitle: @"System Preferences"
-				      action: NULL
+				      action: @selector(openSystemPreferences:)
 			       keyEquivalent: @""];
 
 		[systemMenu addItemWithTitle: @"Dock"
@@ -119,17 +119,17 @@
 		[systemMenu addItem: NSMenuItem.separatorItem];
 
 		[systemMenu addItemWithTitle: @"Force Quit..."
-				      action: NULL
+				      action: @selector(forceQuit:)
 			       keyEquivalent: @""];
 
 		[systemMenu addItem: NSMenuItem.separatorItem];
 
 		[systemMenu addItemWithTitle: @"Restart..."
-				      action: NULL
+				      action: @selector(restartComputer:)
 			       keyEquivalent: @""];
 
 		[systemMenu addItemWithTitle: @"Shut Down..."
-				      action: NULL
+				      action: @selector(shutDownComputer:)
 			       keyEquivalent: @""];
 
 		[systemMenu addItem: NSMenuItem.separatorItem];
