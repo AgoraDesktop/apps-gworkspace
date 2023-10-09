@@ -2870,8 +2870,8 @@ static NSWindow *aboutAgoraWindow;
 - (void) showAboutAgoraWindow: (id) sender {
 	if (aboutAgoraWindow == nil) {
 		NSRect aRect = NSMakeRect(0,0,350,500);
-		aRect.origin.x = (NSScreen.mainScreen.frame.size.width / 2) - (aRect.size.width / 2);
-		aRect.origin.y = (NSScreen.mainScreen.frame.size.height / 2) - (aRect.size.height / 2);
+		aRect.origin.x = [[NSScreen mainScreen] frame].size.width / 2 - aRect.size.width / 2;
+		aRect.origin.y = [[NSScreen mainScreen] frame].size.height / 2 - aRect.size.height / 2;
 		NSWindowStyleMask aMask = NSWindowStyleMaskClosable; 
 		aboutAgoraWindow = [[NSWindow alloc] initWithContentRect: aRect
 							       styleMask: aMask
@@ -2889,7 +2889,7 @@ static NSWindow *aboutAgoraWindow;
 }
 
 - (void) openSystemPreferences: (id) sender {
-	[NSWorkspace.sharedWorkspace launchApplication: @"SystemPreferences"]; 
+	[[NSWorkspace sharedWorkspace] launchApplication: @"SystemPreferences"]; 
 }
 
 - (void) forceQuit: (id) sender {
