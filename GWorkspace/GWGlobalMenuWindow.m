@@ -48,6 +48,8 @@
 		self.backgroundColor = NSColor.clearColor;
 		self.worksWhenModal = YES;
 		self.becomesKeyOnlyIfNeeded = YES;
+		self.hasShadow = NO;
+		self.alphaValue = 0.9;
 
 		// Create a MenuView to hold our global menu.
 		NSMenuView *menuView = [[NSMenuView alloc] initWithFrame: NSMakeRect(-3,-1,25,25)];

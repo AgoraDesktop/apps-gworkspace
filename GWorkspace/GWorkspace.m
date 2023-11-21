@@ -168,21 +168,45 @@ static NSWindow *aboutAgoraWindow;
   NSMenu *subMenu;
   NSMenu *windows, *services;  
   id<NSMenuItem> menuItem;
-    	
-  // Info
-  menuItem = [mainMenu addItemWithTitle:_(@"Info") action:NULL keyEquivalent:@""];
+
+  // AppName menu
+  menuItem = [mainMenu addItemWithTitle:@"GWorkspace" action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];	
-  [menu addItemWithTitle: _(@"Info Panel...") action:@selector(showInfo:) keyEquivalent:@""];
+  [mainMenu setSubmenu: menu forItem: menuItem];
+  
+  [menu addItemWithTitle: _(@"About GWorkspace") action:@selector(showInfo:) keyEquivalent:@""];
+
+  [menu addItem: [NSMenuItem separatorItem]];
+
   [menu addItemWithTitle: _(@"Preferences...") action:@selector(showPreferences:) keyEquivalent:@""];
-  //[menu addItemWithTitle: _(@"Help...") action:@selector(showHelp:) keyEquivalent:@"?"];
-  //[menu addItemWithTitle: _(@"Activate context help") action:@selector(activateContextHelp:) keyEquivalent:@";"];
+
+  [menu addItem: [NSMenuItem separatorItem]];
+
+  [[menu addItemWithTitle:_(@"Empty Trash") action:@selector(emptyRecycler:) 
+	    			     keyEquivalent:@"\x7F"] setKeyEquivalentModifierMask: (NSCommandKeyMask | NSShiftKeyMask)]; 
+
+  [menu addItem: [NSMenuItem separatorItem]];
+
+  menuItem = [menu addItemWithTitle:_(@"Services") action:NULL keyEquivalent:@""];
+  
+  services = AUTORELEASE ([NSMenu new]);
+  
+  [menu setSubmenu: services forItem: menuItem];
+  
+  [menu addItem: [NSMenuItem separatorItem]];
+
+  [menu addItemWithTitle:_(@"Hide GWorkspace") action:@selector(hide:) keyEquivalent:@"h"];
+  
+  [[menu addItemWithTitle:_(@"Hide Others") action:@selector(hideOtherApplications:)  
+					 keyEquivalent:@"h"] setKeyEquivalentModifierMask: (NSCommandKeyMask | NSAlternateKeyMask)];
+  
+  [menu addItemWithTitle:_(@"Show All") action:@selector(unhideAllApplications:) keyEquivalent:@""]; 
 	 
   // File
   menuItem = [mainMenu addItemWithTitle:_(@"File") action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
   [mainMenu setSubmenu: menu forItem: menuItem];		
-  [menu addItemWithTitle:_(@"New Window") action:@selector(showViewer:) keyEquivalent:@"V"];	
+  [menu addItemWithTitle:_(@"New Window") action:@selector(showViewer:) keyEquivalent:@"n"];	
   [menu addItemWithTitle:_(@"Open") action:@selector(openSelection:) keyEquivalent:@"o"];
   [menu addItemWithTitle:_(@"Open With...")  action:@selector(openWith:) keyEquivalent:@""];
   [[menu addItemWithTitle:_(@"Show Contents") action:@selector(openSelectionAsFolder:) 
@@ -190,17 +214,17 @@ static NSWindow *aboutAgoraWindow;
 
   [menu addItem: [NSMenuItem separatorItem]];
 
-  [menu addItemWithTitle:_(@"New Folder") action:@selector(newFolder:) keyEquivalent:@"n"];
+  [[menu addItemWithTitle:_(@"New Folder") action:@selector(newFolder:) 
+	    			    keyEquivalent:@"n"] setKeyEquivalentModifierMask: (NSCommandKeyMask | NSAlternateKeyMask)];
   //[[menu addItemWithTitle:_(@"New File")  action:@selector(newFile:) 
   //    			   keyEquivalent:@"n"] setKeyEquivalentModifierMask: NSAlternateKeyMask];
-  [menu addItemWithTitle:_(@"Duplicate")  action:@selector(duplicateFiles:) keyEquivalent:@"u"];
+  [menu addItemWithTitle:_(@"Duplicate")  action:@selector(duplicateFiles:) keyEquivalent:@"d"];
   //[menu addItemWithTitle:_(@"Delete")  action:@selector(deleteFiles:) keyEquivalent:@"r"];  
   
   [menu addItem: [NSMenuItem separatorItem]];
   
-  [menu addItemWithTitle:_(@"Move to Trash")  action:@selector(recycleFiles:) keyEquivalent:@"d"];
-  [menu addItemWithTitle:_(@"Empty Trash") action:@selector(emptyRecycler:) keyEquivalent:@""];
-  
+  [menu addItemWithTitle:_(@"Move to Trash")  action:@selector(recycleFiles:) 
+	   			       keyEquivalent:@"\x7F"]; 
   // Edit
   menuItem = [mainMenu addItemWithTitle:_(@"Edit") action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
@@ -330,20 +354,6 @@ static NSWindow *aboutAgoraWindow;
   [windows addItemWithTitle:_(@"Arrange in Front") action:@selector(arrangeInFront:) keyEquivalent:@""];
   [windows addItemWithTitle:_(@"Miniaturize Window") action:@selector(performMiniaturize:) keyEquivalent:@"m"];
   [windows addItemWithTitle:_(@"Close Window") action:@selector(performClose:) keyEquivalent:@"w"];
-
-  // Services 
-  menuItem = [mainMenu addItemWithTitle:_(@"Services") action:NULL keyEquivalent:@""];
-  services = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: services forItem: menuItem];		
-
-  // Hide
-  [mainMenu addItemWithTitle:_(@"Hide GWorkspace") action:@selector(hide:) keyEquivalent:@"h"];
-  [[mainMenu addItemWithTitle:_(@"Hide Others") action:@selector(hideOtherApplications:)  
-					 keyEquivalent:@"h"] setKeyEquivalentModifierMask: (NSCommandKeyMask | NSAlternateKeyMask)];
-  [mainMenu addItemWithTitle:_(@"Show All") action:@selector(unhideAllApplications:) keyEquivalent:@""];
-
-  // Print
-  //[mainMenu addItemWithTitle:_(@"Print...") action:@selector(print:) keyEquivalent:@"p"];
 	
   [mainMenu update];
 
@@ -2872,16 +2882,18 @@ static NSWindow *aboutAgoraWindow;
 		NSRect aRect = NSMakeRect(0,0,350,500);
 		aRect.origin.x = (NSScreen.mainScreen.frame.size.width / 2) - (aRect.size.width / 2);
 		aRect.origin.y = (NSScreen.mainScreen.frame.size.height / 2) - (aRect.size.height / 2);
-		NSWindowStyleMask aMask = NSWindowStyleMaskClosable; 
+		NSWindowStyleMask aMask = NSWindowStyleMaskClosable | NSWindowStyleMaskTitled; 
 		aboutAgoraWindow = [[NSWindow alloc] initWithContentRect: aRect
 							       styleMask: aMask
 								 backing: NSBackingStoreBuffered
 								   defer: YES];
 		aboutAgoraWindow.releasedWhenClosed = NO;
 		aboutAgoraWindow.title = @"About Agora";
+		aboutAgoraWindow.excludedFromWindowsMenu = YES;
 
 		[aboutAgoraWindow retain];
 
+		aboutAgoraWindow.toolbar = [[NSToolbar alloc] init];
 
 	}
 
